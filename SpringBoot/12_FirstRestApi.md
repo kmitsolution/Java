@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloWorld {
 
-    @RequestMapping(method = RequestMethod.GET, path="/hello-world")
+    //@RequestMapping(method = RequestMethod.GET, path="/hello-world")  we can use this or better to use GetMapping
+     @GetMapping( path="/hello-world")
 	public String helloworld()
 	{
     	return "<b>Hello World</b";
