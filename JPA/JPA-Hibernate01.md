@@ -32,14 +32,29 @@ create table Book
 ```java
 package com.jpa.springboot.jpahibernate.book.jdbc;
 
+import org.springframework.stereotype.Component;
+
+
 public class Book {
 private int id;
 private String name;
 private String Author;
+public Book(){
+	
+}
 public Book(int id, String name, String author) {
 	super();
 	this.id = id;
 	this.name = name;
+	Author = author;
+}
+public void setId(int id) {
+	this.id = id;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public void setAuthor(String author) {
 	Author = author;
 }
 public int getId() {
@@ -52,17 +67,25 @@ public String getName() {
 public String getAuthor() {
 	return Author;
 }
+@Override
+public String toString() {
+	return "Book [id=" + id + ", name=" + name + ", Author=" + Author + "]";
+}
 
 
 
 }
+
 
 ```
 
 ```java
 package com.jpa.springboot.jpahibernate.book.jdbc;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -73,6 +96,7 @@ public class BookJdbcRepository {
 	private JdbcTemplate springJdbcTemplate;
 	private static String INSERT_QUERY="insert into book values(?,?,?);";
 	private static String DELETE_QUERY="delete from book where id=?;";
+	private static String SELECT_QUERY="select * from book where id=?;";
 	public void insert(Book book) {
 		springJdbcTemplate.update(INSERT_QUERY,book.getId(),book.getName(),book.getAuthor());
 	}
@@ -80,6 +104,18 @@ public class BookJdbcRepository {
 		springJdbcTemplate.update(DELETE_QUERY,id);
 	}
 			
+	public Book findById(long id) {
+		
+		 var sql = "SELECT * FROM books where id=?";
+
+	        //var rowMapper = BeanPropertyRowMapper.newInstance(Book.class);
+	        //List<Book> countries = springJdbcTemplate.query(sql, rowMapper);
+
+	        //countries.forEach(country -> logger.info("{}", country))
+	        //return countries[0];
+		return springJdbcTemplate.queryForObject(SELECT_QUERY,
+				new BeanPropertyRowMapper<>(Book.class),id);
+	}
 }
 
 
@@ -102,11 +138,14 @@ public class BookJdbcCommandLineRunner implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub= 
-		Book book = new Book(1,"Azure","Book1");
+		
 		repoistory.insert(new Book(1,"Azure","Book1"));
 		repoistory.insert(new Book(2,"Azure104","Book2"));
 		repoistory.insert(new Book(3,"Azure400","Book3"));
 		repoistory.delete(1);
+		
+		System.out.println(repoistory.findById(2));
+		System.out.println(repoistory.findById(3));
 	}
 
 }
