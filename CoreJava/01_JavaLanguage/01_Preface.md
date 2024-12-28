@@ -7,6 +7,7 @@ Java is one of the most widely used and influential programming languages in the
 - **Developer**: Sun Microsystems (acquired by Oracle Corporation in 2010)  
 - **First appeared**: May 23, 1995  
 - **Paradigm**: Multi-paradigm (generic, object-oriented (class-based), functional, imperative, reflective, concurrent)
+- **Java Supported Platforms**: Java is supported on platforms including Windows, macOS, Linux, Unix, Android, embedded systems, and cloud platforms, thanks to the Java Virtual Machine (JVM).
 
   
 ## Key Points:
@@ -23,4 +24,4 @@ Java is one of the most widely used and influential programming languages in the
 - **JavaFX**: A new GUI framework for Java, offering more modern options for building graphical user interfaces. It is expected to play a significant role in Java application development moving forward.
 - **Swing**: While JavaFX is the future of Java GUI frameworks, **Swing** remains widely used, and its features, such as menus, are still relevant for many applications.
   
-This evolution is reflected in the continued updates of resources like this book, now in its Ninth edition, which covers the latest advancements and features in Java programming.
+
