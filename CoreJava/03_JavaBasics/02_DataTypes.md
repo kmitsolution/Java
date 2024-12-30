@@ -1,5 +1,19 @@
 ### Data Types in Java
-
+```
+                                Data Type
+                                 |
+      ------------------------------------------------
+      |                                              |
+  Primitive Data Types                             Reference Data Types
+      |                                              |
+   ----------------                           ----------------------
+   |              |                          |                    |
+ Numeric Types   Other Types                Arrays               Classes / Interfaces
+   |                      |
+ Integer Types         Floating-Point Types
+   |                       |
+ byte, short, int, long  float, double
+```
 Java provides a rich set of **data types** that are used to store values in variables. These data types are categorized into two main types:
 
 1. **Primitive Data Types**: These are the most basic data types in Java, defined by the language and used to store simple values.
