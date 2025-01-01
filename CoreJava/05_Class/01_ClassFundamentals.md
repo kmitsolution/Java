@@ -117,6 +117,44 @@ Java provides four types of **access modifiers**:
    
 4. **Default (Package-Private)**:
    - If no access modifier is specified, the member is accessible only within its package (this is the default access level).
+  
+### Class Diagram for Car Class
+
+```
++----------------------+
+|        Car           |
++----------------------+
+| - brand: String      |
+| - model: String      |
+| - year: int          |
++----------------------+
+| + Car(brand: String, |
+|   model: String,     |
+|   year: int)         |
+| + getBrand(): String |
+| + getModel(): String |
+| + getYear(): int     |
+| + displayDetails():  |
+|   void               |
++----------------------+
+```
+
+### Explanation:
+- **Class Name:** `Car`
+- **Attributes (Fields/Properties):**
+  - `brand`: A `String` representing the car's brand (private)
+  - `model`: A `String` representing the car's model (private)
+  - `year`: An `int` representing the car's manufacturing year (private)
+  
+- **Methods:**
+  - **Constructor:** `Car(String brand, String model, int year)` to initialize the car's attributes
+  - **Getter Methods:** 
+    - `getBrand()` returns the `String` representing the brand
+    - `getModel()` returns the `String` representing the model
+    - `getYear()` returns the `int` representing the year
+  - **Method:** `displayDetails()` prints out the car's details in the format "Year Brand Model"
+
+This diagram helps visualize the structure of the `Car` class, showing the attributes, constructor, and methods.
    
 ### **Summary of Key Points**:
 
