@@ -155,6 +155,44 @@ Java provides four types of **access modifiers**:
   - **Method:** `displayDetails()` prints out the car's details in the format "Year Brand Model"
 
 This diagram helps visualize the structure of the `Car` class, showing the attributes, constructor, and methods.
+
+An **Object Diagram** represents instances (objects) of a class at a specific point in time, showing the state of the objects. Below is an example of an object diagram based on your `Car` class.
+
+### Example Object Diagram:
+
+Let's say you have created two `Car` objects:
+
+1. A `Car` object with the brand "Toyota", model "Camry", and year 2022.
+2. A `Car` object with the brand "Honda", model "Civic", and year 2021.
+
+```
++-------------------------------------+
+|           car1: Car                 |
++-------------------------------------+
+| brand: "Toyota"                     |
+| model: "Camry"                      |
+| year: 2022                          |
++-------------------------------------+
+
++-------------------------------------+
+|           car2: Car                 |
++-------------------------------------+
+| brand: "Honda"                      |
+| model: "Civic"                      |
+| year: 2021                          |
++-------------------------------------+
+```
+
+### Explanation:
+
+- **Objects:**
+  - `car1` and `car2` are two instances (objects) of the `Car` class.
+  
+- **State of Objects:**
+  - `car1` has values for `brand = "Toyota"`, `model = "Camry"`, and `year = 2022`.
+  - `car2` has values for `brand = "Honda"`, `model = "Civic"`, and `year = 2021`.
+
+This object diagram shows the specific values of each instance of the `Car` class at a particular point in time.
    
 ### **Summary of Key Points**:
 
