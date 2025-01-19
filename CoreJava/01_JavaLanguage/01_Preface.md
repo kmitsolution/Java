@@ -16,7 +16,7 @@ Java is one of the most widely used and influential programming languages in the
 - **Web Development**: Java became a leader in internet programming from its first release and continues to be a top choice for developing web-based applications.
 - **Agility and Adaptability**: Java has evolved to keep up with the fast-paced changes in technology, continually enhancing its features
 
-- **Java SE 8 Features**: 
+- **Java Features**: 
   - Introduction of **lambda expressions**, boosting the language’s expressive power.
   - The **stream library** in `java.util.stream`, enabling efficient data processing.
   - **Default methods** in interfaces, allowing additional functionality without breaking existing code.
