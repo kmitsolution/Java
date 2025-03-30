@@ -155,3 +155,151 @@ public class TestSingleton {
 ### **Conclusion:**
 
 A `final` class in Java is a class that cannot be subclassed. It is often used for utility classes, immutable classes, security purposes, and patterns like Singleton. By using `final`, you ensure that the behavior of the class remains unchanged and predictable. However, it should be used carefully when you do not need the class to be extended by other classes.
+
+## final method
+In Java, a **`final` method** is a method that cannot be overridden by any subclass. This is useful when you want to ensure that the behavior of a method remains consistent and is not altered by any subclass.
+
+### **Key Points about `final` Methods:**
+- A method declared as `final` cannot be overridden by any subclass.
+- It can still be inherited by subclasses, but its implementation cannot be changed.
+- The `final` keyword ensures that the method’s behavior remains unchanged in subclasses, which is useful for providing a **guaranteed implementation**.
+
+### **Syntax:**
+```java
+public final returnType methodName() {
+    // method body
+}
+```
+
+### **Example of a `final` Method in Java:**
+
+```java
+class Animal {
+    // A final method that cannot be overridden
+    public final void sound() {
+        System.out.println("This animal makes a sound.");
+    }
+}
+
+class Dog extends Animal {
+    // This will cause a compile-time error because the sound method is final in the Animal class
+    // public void sound() {
+    //     System.out.println("The dog barks.");
+    // }
+
+    public void display() {
+        System.out.println("This is a dog.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.sound();  // Calls the final method from the parent class
+        dog.display();  // Calls the non-final method from the Dog class
+    }
+}
+```
+
+### **Output:**
+```
+This animal makes a sound.
+This is a dog.
+```
+
+### **Explanation:**
+1. **`sound()` method in the `Animal` class**: This method is declared as `final`, so it cannot be overridden by any subclass (like the `Dog` class).
+2. In the **`Dog` class**, if you try to override the `sound()` method, the code will not compile because the `sound()` method in the `Animal` class is `final`.
+3. You can still call the `sound()` method from the `Dog` class because it inherits this method from the `Animal` class, but the method's implementation cannot be modified in `Dog`.
+
+### **Key Takeaways:**
+- A **`final` method** ensures that the behavior of the method cannot be changed in any subclass.
+- It can be inherited, but not overridden.
+- This feature is helpful in scenarios where you want to preserve the original behavior of a method and prevent subclasses from modifying it.
+
+### **Real-World Example:**
+In a security-related system, you may want to create a **`final` method** for logging, ensuring that the way logging is done in a parent class cannot be changed by subclasses to avoid tampering with the logging process.
+
+```java
+class Logger {
+    // A final method to ensure logging behavior is fixed
+    public final void logMessage(String message) {
+        System.out.println("Logging message: " + message);
+    }
+}
+
+class SpecialLogger extends Logger {
+    // Trying to override the final method will cause a compile-time error
+    // public void logMessage(String message) {
+    //     System.out.println("Special logging: " + message);  // Error!
+    // }
+}
+```
+
+In this case, the `logMessage` method will always log the message in the same way, ensuring consistency and security across any subclass that inherits `Logger`.
+
+## final variable (constant variable)
+ **`final` variable** in Java is often used to create **constant variables**, but there are important nuances and distinctions. Let's break it down:
+
+### **Similarities Between `final` Variables and Constants:**
+
+1. **Immutability**: 
+   - A `final` variable cannot be reassigned after it is initialized. This is similar to how a constant is defined (i.e., a value that should not change throughout the program).
+   
+2. **Value Cannot Change**:
+   - Once you assign a value to a `final` variable, you cannot modify it. This is a characteristic of constants — their value remains the same throughout the program.
+
+### **Key Differences Between `final` Variables and Constants**:
+
+1. **Definition**:
+   - A **constant** is a variable that holds a fixed value which doesn't change, usually associated with some specific value like `PI`, `MAX_VALUE`, etc.
+   - A **`final` variable** is simply a variable whose value cannot be reassigned after initialization. You can have a `final` variable that isn't technically a constant (e.g., a `final` instance variable that can be initialized dynamically).
+
+2. **Convention**:
+   - While **`final` variables** can be used as constants, the **convention** for **constants** in Java is to use **uppercase letters** and words separated by underscores. For example, `final int MAX_USERS = 100;` is typically considered a **constant** in Java.
+   - In Java, **constants** are generally declared as `public static final` to make them universally accessible across the application.
+
+### **Creating Constants Using `final`**:
+
+To define a constant in Java, we typically declare it as a **`public static final`** variable. The `static` keyword ensures that the constant belongs to the class rather than an instance of the class, and the `final` keyword ensures that the value cannot be changed once assigned.
+
+### **Example**:
+
+```java
+public class MathConstants {
+    // A constant PI
+    public static final double PI = 3.14159;
+
+    // A constant maximum number of users
+    public static final int MAX_USERS = 100;
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Value of PI: " + MathConstants.PI);
+        System.out.println("Max Users: " + MathConstants.MAX_USERS);
+        
+        // These will cause a compile-time error
+        // MathConstants.PI = 3.14;  // Error: Cannot assign a value to final variable 'PI'
+        // MathConstants.MAX_USERS = 150;  // Error: Cannot assign a value to final variable 'MAX_USERS'
+    }
+}
+```
+
+### **Output**:
+```
+Value of PI: 3.14159
+Max Users: 100
+```
+
+### **Key Points in the Example**:
+- `PI` and `MAX_USERS` are both declared as **`public static final`**, meaning they are **constants**.
+- The `final` keyword makes sure these variables cannot be modified after their initial assignment.
+- The **`static` keyword** ensures that they belong to the class and are shared across all instances.
+
+### **Summary**:
+- A **`final` variable** can be considered a constant **if it follows the convention** (e.g., using `public static final` and uppercase letters).
+- **Not all `final` variables are constants**; a `final` instance variable, for example, can still be initialized dynamically, and its value cannot change after initialization. 
+- **Constants** are typically defined using `public static final` to ensure they are constant across the application.
+
+In short: While **all constants are `final` variables**, **not all `final` variables are constants** (unless they are declared according to the constant naming conventions).
