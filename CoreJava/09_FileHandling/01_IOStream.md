@@ -140,4 +140,4 @@ public class CharacterStreamWriteExample {
 ✔ **Character Streams** handle text-based data like `.txt`, `.csv`.  
 ✔ **Buffered Streams** improve performance.  
 
-Would you like an example with **BufferedReader or file compression?** 🚀
+
