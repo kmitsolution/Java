@@ -1,121 +1,82 @@
-# ✅ Bean Searching **By Name** in Spring
+# ✅ What is `@Qualifier` in Spring?
 
-(Using SortAlgorithm Example)
+`@Qualifier` is used when:
 
-In Spring, dependency injection can happen:
+> There are **multiple beans of the same type**, and you want to tell Spring **exactly which one to inject**.
 
-1. **By Type** (default behavior of `@Autowired`)
-2. **By Name** (using `@Qualifier` or `@Resource`)
+---
 
-Now let’s clearly understand **By Name searching** using your:
+# 🎯 Why Do We Need `@Qualifier`?
+
+In our example we have:
+
+* `BubbleSort`
+* `SelectionSort`
+
+Both implement:
+
+```java
+SortAlgorithm
+```
+
+So when Spring sees:
+
+```java
+@Autowired
+public SearchService(SortAlgorithm sortAlgorithm)
+```
+
+Spring gets confused:
+
+> ❌ Which one should I inject?
+
+This causes:
+
+```
+NoUniqueBeanDefinitionException
+```
+
+---
+
+# ✅ Solution 1: Use `@Primary` (Default Bean)
+
+If one bean is marked:
+
+```java
+@Primary
+@Component
+public class BubbleSort implements SortAlgorithm
+```
+
+Spring injects `BubbleSort` by default.
+
+But what if you want to use **SelectionSort instead?**
+
+👉 That’s where `@Qualifier` is used.
+
+---
+
+# ✅ How to Use `@Qualifier`
+
+We will use the same project:
+
+### Package:
 
 ```
 com.kmitcourses.demo
 ```
 
-Sorting Algorithm example.
+---
+
+# Step 1️⃣ Remove `@Primary`
+
+Remove `@Primary` from `BubbleSort`.
 
 ---
 
-# 🎯 What is By-Name Bean Searching?
+# Step 2️⃣ Use `@Qualifier`
 
-By-Name means:
-
-> Spring injects the bean whose **name matches the variable name** or the specified qualifier name.
-
----
-
-# 🔎 Default Bean Names in Spring
-
-When you use:
-
-```java
-@Component
-public class BubbleSort
-```
-
-Spring automatically creates a bean with name:
-
-```
-bubbleSort
-```
-
-Similarly:
-
-```java
-@Component
-public class SelectionSort
-```
-
-Bean name becomes:
-
-```
-selectionSort
-```
-
-Rule:
-
-> ClassName → first letter lowercase
-
----
-
-# ✅ Example: By-Name Injection Using `@Qualifier`
-
----
-
-## 📌 Step 1: Interface
-
-```java
-package com.kmitcourses.demo;
-
-public interface SortAlgorithm {
-    int[] sort(int[] numbers);
-}
-```
-
----
-
-## 📌 Step 2: BubbleSort Bean
-
-```java
-package com.kmitcourses.demo;
-
-import org.springframework.stereotype.Component;
-
-@Component
-public class BubbleSort implements SortAlgorithm {
-
-    @Override
-    public int[] sort(int[] numbers) {
-        System.out.println("Using Bubble Sort");
-        return numbers;
-    }
-}
-```
-
----
-
-## 📌 Step 3: SelectionSort Bean
-
-```java
-package com.kmitcourses.demo;
-
-import org.springframework.stereotype.Component;
-
-@Component
-public class SelectionSort implements SortAlgorithm {
-
-    @Override
-    public int[] sort(int[] numbers) {
-        System.out.println("Using Selection Sort");
-        return numbers;
-    }
-}
-```
-
----
-
-# ✅ Step 4: Inject By Name Using `@Qualifier`
+### Modify `SearchService.java`
 
 ```java
 package com.kmitcourses.demo;
@@ -138,10 +99,10 @@ public class SearchService {
 
     public int search(int[] numbers, int key) {
 
-        int[] sorted = sortAlgorithm.sort(numbers);
+        int[] sortedNumbers = sortAlgorithm.sort(numbers);
 
-        for (int i = 0; i < sorted.length; i++) {
-            if (sorted[i] == key) {
+        for (int i = 0; i < sortedNumbers.length; i++) {
+            if (sortedNumbers[i] == key) {
                 return i;
             }
         }
@@ -153,112 +114,134 @@ public class SearchService {
 
 ---
 
-# 🔍 What Happens Internally?
+# 🔍 Important Rule
 
-Spring sees:
+By default, Spring bean name is:
 
 ```
-Multiple beans of type SortAlgorithm:
-   bubbleSort
-   selectionSort
+class name with first letter lowercase
 ```
 
-Then sees:
+So:
+
+| Class Name    | Bean Name     |
+| ------------- | ------------- |
+| BubbleSort    | bubbleSort    |
+| SelectionSort | selectionSort |
+
+That’s why we wrote:
 
 ```java
 @Qualifier("selectionSort")
 ```
 
-Spring injects:
+---
+
+# 🔄 What Happens Now?
 
 ```
-Bean with name "selectionSort"
+Spring sees multiple SortAlgorithm beans
+        ↓
+Sees @Qualifier("selectionSort")
+        ↓
+Injects SelectionSort
+```
+
+Now output will be:
+
+```
+Using Selection Sort
 ```
 
 ---
 
-# 🏗 Flow
+# 🏗 Flow Diagram
 
 ```
-BubbleSort  → bean name: bubbleSort
-SelectionSort → bean name: selectionSort
+BubbleSort   → Bean name: bubbleSort
+SelectionSort → Bean name: selectionSort
 
-SearchService constructor
-      ↓
+SearchService
+     ↓
+@Autowired
 @Qualifier("selectionSort")
-      ↓
-Spring injects SelectionSort
+     ↓
+SelectionSort injected
 ```
 
 ---
 
-# ✅ Alternative: Using `@Resource` (Pure By Name)
+# ✅ Real Use Cases of `@Qualifier`
 
-`@Resource` works primarily by name.
+### 1️⃣ Multiple Payment Methods
 
 ```java
-import jakarta.annotation.Resource;
-
-@Component
-public class SearchService {
-
-    @Resource(name = "bubbleSort")
-    private SortAlgorithm sortAlgorithm;
-
-    public int search(int[] numbers, int key) {
-        sortAlgorithm.sort(numbers);
-        return -1;
-    }
-}
+CreditCardPayment
+UPIPayment
+NetBankingPayment
 ```
 
-Here:
-
-```
-@Resource(name="bubbleSort")
-```
-
-Spring directly searches bean by name.
+You can choose which one to inject.
 
 ---
 
-# 🔥 Difference Between By-Type and By-Name
+### 2️⃣ Multiple Database Connections
 
-| Injection Type | How It Works                          |
-| -------------- | ------------------------------------- |
-| By Type        | Matches based on class/interface type |
-| By Name        | Matches based on bean name            |
-| @Autowired     | By Type (default)                     |
-| @Qualifier     | By Name (with @Autowired)             |
-| @Resource      | By Name (default behavior)            |
+* MySQL DataSource
+* PostgreSQL DataSource
+
+Choose specific datasource.
 
 ---
 
-# 🎯 When To Use By-Name?
+### 3️⃣ Multiple Sorting Algorithms (Our Example)
 
-Use By-Name when:
+Choose:
+
+* BubbleSort
+* SelectionSort
+* QuickSort
+
+---
+
+# ✅ Alternative Way (Custom Bean Name)
+
+You can also give custom name:
+
+```java
+@Component("fastSort")
+public class BubbleSort implements SortAlgorithm
+```
+
+Then:
+
+```java
+@Qualifier("fastSort")
+```
+
+---
+
+# 🔥 Difference: `@Primary` vs `@Qualifier`
+
+| Feature                 | @Primary      | @Qualifier     |
+| ----------------------- | ------------- | -------------- |
+| Default Bean            | Yes           | No             |
+| Specific Bean Selection | No            | Yes            |
+| Used When               | One main bean | Multiple beans |
+
+---
+
+# 🏆 Final Summary
+
+`@Qualifier` is used when:
 
 ✔ Multiple beans of same type exist
-✔ You want specific implementation
-✔ You want clear control
-✔ Avoid ambiguity error
+✔ You want specific bean injection
+✔ Avoid NoUniqueBeanDefinitionException
 
 ---
 
-# 🏆 Final Understanding
+# 🎯 Interview Answer (Short Version)
 
-In your Sorting example:
-
-If you want:
-
-* BubbleSort → use `"bubbleSort"`
-* SelectionSort → use `"selectionSort"`
-
-Spring searches bean name inside IoC container and injects matching one.
-
----
-
-# 🎓 Interview Answer (Short)
-
-> By-name injection in Spring means the container injects a dependency by matching the bean name. It can be done using `@Qualifier` with `@Autowired` or using `@Resource`.
+> `@Qualifier` is used along with `@Autowired` when multiple beans of same type are present. It helps specify which exact bean should be injected.
 
